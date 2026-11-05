@@ -1,0 +1,246 @@
+<title>Caderno Amazon · Magalu · TikTok</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: página de caderno pontilhado; resumo por canal no topo, depois as linhas agrupadas por etapa do cronograma */
+:root{
+  --paper:#f3f6f9; --dot:#c9d3df; --ink:#16233a; --muted:#5a6880; --line:#dbe2ea; --card:#ffffff;
+  --accent:#1f4fd1;
+  --s-aberto:#8a97ab; --s-andamento:#2f6fe4; --s-aguardando:#d69408; --s-bloqueado:#d23c3c; --s-feito:#1f9d55;
+  --amazon:#e47911; --magalu:#0086ff; --tiktok:#e5174b; --comum:#5b5fc7;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1522; --dot:#25304a; --ink:#e6ecf5; --muted:#93a1b8; --line:#26314a; --card:#151d2e;
+  --accent:#7ea2ff; --s-aberto:#7c8aa3; --s-andamento:#5a8dff; --s-aguardando:#f0b03a; --s-bloqueado:#f06464; --s-feito:#3cc47a;
+  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1522; --dot:#25304a; --ink:#e6ecf5; --muted:#93a1b8; --line:#26314a; --card:#151d2e;
+  --accent:#7ea2ff; --s-aberto:#7c8aa3; --s-andamento:#5a8dff; --s-aguardando:#f0b03a; --s-bloqueado:#f06464; --s-feito:#3cc47a;
+  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  background-image:radial-gradient(var(--dot) 1px,transparent 1.2px);background-size:22px 22px;}
+.wrap{max-width:920px;margin:0 auto;padding-block:28px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:700;font-size:20px;margin:0;text-wrap:balance}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sub{color:var(--muted);max-width:62ch;margin:6px 0 0}
+header{display:flex;flex-direction:column;gap:4px}
+
+/* canais de anúncio */
+.channels{display:flex;flex-wrap:wrap;gap:8px}
+.chan{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:13px}
+.chan .b{width:14px;height:14px}
+.chan.off{color:var(--muted);border-style:dashed}
+
+/* resumo */
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.sum[aria-pressed="true"]{outline:2px solid var(--c);outline-offset:-1px}
+.sum:focus-visible{outline:2px solid var(--accent)}
+.sum .name{display:flex;align-items:center;gap:8px;font-weight:700}
+.sum .name i{width:10px;height:10px;border-radius:2px;background:var(--c)}
+.sum .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%}
+
+/* legenda */
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .b{width:14px;height:14px}
+
+/* bolinhas */
+.b{--c:var(--s-aberto);width:24px;height:24px;border-radius:50%;flex:none;display:inline-block;position:relative;border:2px solid var(--c);background:transparent}
+.b[data-s="andamento"]{--c:var(--s-andamento);background:linear-gradient(90deg,var(--c) 50%,transparent 50%)}
+.b[data-s="aguardando"]{--c:var(--s-aguardando);background:radial-gradient(circle,var(--c) 30%,transparent 33%)}
+.b[data-s="bloqueado"]{--c:var(--s-bloqueado);background:var(--card)}
+.b[data-s="bloqueado"]::after{content:"";position:absolute;left:50%;top:50%;width:70%;height:2px;background:var(--c);transform:translate(-50%,-50%) rotate(-45deg)}
+.b[data-s="feito"]{--c:var(--s-feito);background:var(--c)}
+.b[data-s="feito"]::after{content:"";position:absolute;left:34%;top:20%;width:28%;height:48%;border:solid var(--card);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.chan .b::after,.legend .b::after{border-width:0 2px 2px 0}
+
+/* fases */
+.phase{display:flex;flex-direction:column;gap:10px}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.phase-head .due{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.phase-head .pc{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-left:auto}
+.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.row{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.bubble-btn{all:unset;cursor:pointer;border-radius:50%;padding:2px;margin-top:-1px}
+.bubble-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bubble-btn:hover .b{transform:scale(1.08)}
+.b{transition:transform .12s}
+.body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.title{font-weight:700}
+.row[data-s="feito"] .title{text-decoration:line-through;text-decoration-thickness:1px;color:var(--muted)}
+.det{color:var(--muted);font-size:14px}
+.note{font-size:13px;color:var(--ink);background:color-mix(in srgb,var(--s-aguardando) 14%,transparent);border-radius:4px;padding:2px 6px;align-self:flex-start;margin-top:4px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-radius:4px;padding:0 6px}
+.linkbtn{all:unset;cursor:pointer;font-size:12px;color:var(--accent)}
+.linkbtn:focus-visible{outline:2px solid var(--accent)}
+.note-edit{display:flex;gap:6px;margin-top:6px}
+.note-edit input{flex:1;min-width:0;font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+
+/* menu de status */
+.menu{position:absolute;z-index:20;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;display:flex;flex-direction:column;min-width:190px}
+.menu button{all:unset;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:14px}
+.menu button:hover,.menu button:focus-visible{background:var(--paper)}
+.menu .b{width:18px;height:18px}
+
+.state{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:20px;color:var(--muted)}
+.add{display:flex;flex-wrap:wrap;gap:8px}
+.add input,.add select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.add input{flex:1 1 260px;min-width:0}
+.add button{font:inherit;font-weight:700;padding:8px 14px;border-radius:8px;border:0;background:var(--accent);color:var(--card);cursor:pointer}
+footer{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.b{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Projeto · Eli Limpa · Bling</div>
+    <h1>Caderno Amazon · Magalu · TikTok Shop</h1>
+    <p class="sub">O que falta para cada produto cadastrado no Bling sair anunciado em sete lugares. Toque na bolinha para mudar o status, ou me conte no chat que eu marco.</p>
+  </header>
+
+  <section aria-label="Canais de anúncio">
+    <div class="eyebrow" style="margin-bottom:8px">Onde um produto novo é anunciado</div>
+    <div class="channels" id="channels"></div>
+  </section>
+
+  <section class="summary" id="summary" aria-label="Progresso por frente"></section>
+
+  <div class="legend" id="legend"></div>
+
+  <main id="phases"><div class="state" id="state">Abrindo o caderno…</div></main>
+
+  <section aria-label="Adicionar tarefa">
+    <div class="eyebrow" style="margin-bottom:8px">Faltou alguma coisa?</div>
+    <form class="add" id="addForm">
+      <input id="addTitle" placeholder="Nova tarefa, ex.: pedir isenção de EAN dos kits" aria-label="Nova tarefa">
+      <select id="addCanal" aria-label="Frente">
+        <option value="comum">Base Bling</option><option value="amazon">Amazon</option>
+        <option value="magalu">Magalu</option><option value="tiktok">TikTok Shop</option>
+      </select>
+      <select id="addFase" aria-label="Etapa"></select>
+      <button type="submit">Adicionar</button>
+    </form>
+  </section>
+
+  <footer>Requisitos de cada marketplace mudam; os itens marcados “confirmar” valem uma checada na própria plataforma.</footer>
+</div>
+
+<script>
+const STATUS=[
+  {k:"aberto",l:"A fazer"},{k:"andamento",l:"Em andamento"},{k:"aguardando",l:"Aguardando marketplace"},
+  {k:"bloqueado",l:"Travado"},{k:"feito",l:"Feito"}];
+const CANAIS={comum:{l:"Base Bling",c:"var(--comum)"},amazon:{l:"Amazon",c:"var(--amazon)"},magalu:{l:"Magalu",c:"var(--magalu)"},tiktok:{l:"TikTok Shop",c:"var(--tiktok)"}};
+const FASES=[
+  {n:1,t:"Contas e documentos",due:"até 13/nov"},
+  {n:2,t:"Integração no Bling",due:"até 20/nov"},
+  {n:3,t:"Produto-teste no ar",due:"até 27/nov · Black Friday"},
+  {n:4,t:"Catálogo completo",due:"até 11/dez"}];
+const ATIVOS=["Nuvemshop","Shopee","Mercado Livre Clássico","Mercado Livre Premium"];
+const NOVOS=[["amazon","Amazon"],["magalu","Magalu"],["tiktok","TikTok Shop"]];
+
+let tasks=[], filtro=null, db=null, editing=null, loaded=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const bubble=s=>`<span class="b" data-s="${s||"aberto"}"></span>`;
+
+$("legend").innerHTML=STATUS.map(s=>`<span>${bubble(s.k)}${s.l}</span>`).join("");
+$("addFase").innerHTML=FASES.map(f=>`<option value="${f.n}">Etapa ${f.n}</option>`).join("");
+
+function counts(list){const o={total:list.length};STATUS.forEach(s=>o[s.k]=0);list.forEach(t=>o[t.status||"aberto"]++);return o}
+
+function render(){
+  // canais
+  const chan=ATIVOS.map(n=>`<span class="chan">${bubble("feito")}${n}</span>`);
+  NOVOS.forEach(([k,n])=>{const c=counts(tasks.filter(t=>t.canal===k));const on=c.total&&c.feito===c.total;
+    chan.push(`<span class="chan ${on?"":"off"}">${bubble(on?"feito":(c.feito||c.andamento?"andamento":"aberto"))}${n}${on?"":` <span style="font-family:var(--f-mono);font-size:12px">${c.feito}/${c.total}</span>`}</span>`)});
+  $("channels").innerHTML=chan.join("");
+  // resumo
+  $("summary").innerHTML=Object.entries(CANAIS).map(([k,v])=>{const c=counts(tasks.filter(t=>t.canal===k));
+    const seg=STATUS.filter(s=>s.k!=="aberto").map(s=>c.total?`<span style="width:${c[s.k]/c.total*100}%;background:var(--s-${s.k})"></span>`:"").join("");
+    return `<button class="sum" style="--c:${v.c}" aria-pressed="${filtro===k}" data-f="${k}"><span class="name"><i></i>${v.l}</span><span class="bar">${seg}</span><span class="num">${c.feito}/${c.total} feitas${c.aguardando?` · ${c.aguardando} aguardando`:""}${c.bloqueado?` · ${c.bloqueado} travada${c.bloqueado>1?"s":""}`:""}</span></button>`}).join("");
+  if(!loaded) return;
+  const vis=tasks.filter(t=>!filtro||t.canal===filtro);
+  if(!tasks.length){$("phases").innerHTML=`<div class="state">O caderno ainda está em branco. Peça no chat para eu preencher a lista, ou adicione a primeira tarefa abaixo.</div>`;return}
+  $("phases").innerHTML=FASES.map(f=>{
+    const rows=vis.filter(t=>(t.fase||1)===f.n).sort((a,b)=>(a.ordem??99)-(b.ordem??99));
+    if(!rows.length) return "";
+    const c=counts(rows);
+    return `<section class="phase"><div class="phase-head"><span class="eyebrow">Etapa ${f.n}</span><h2>${esc(f.t)}</h2><span class="due">${esc(f.due)}</span><span class="pc">${c.feito}/${c.total}</span></div>
+    <ul class="list">${rows.map(row).join("")}</ul></section>`}).join("")
+    || `<div class="state">Nada nessa frente.</div>`;
+  $("phases").style.cssText="display:flex;flex-direction:column;gap:28px";
+}
+function row(t){
+  const s=t.status||"aberto", cn=CANAIS[t.canal]||CANAIS.comum;
+  const ed=editing===t.id;
+  return `<li class="row" data-s="${s}">
+    <button class="bubble-btn" data-id="${t.id}" aria-label="Status: ${STATUS.find(x=>x.k===s)?.l}. Mudar">${bubble(s)}</button>
+    <div class="body"><span class="title">${esc(t.titulo)}</span>
+      ${t.detalhe?`<span class="det">${esc(t.detalhe)}</span>`:""}
+      ${t.nota&&!ed?`<span class="note">${esc(t.nota)}</span>`:""}
+      ${ed?`<form class="note-edit" data-note="${t.id}"><input id="note-${t.id}" value="${esc(t.nota)}" placeholder="Anotação (ex.: protocolo, data da videochamada)"><button class="linkbtn" type="submit">Salvar</button></form>`:""}
+      <span class="meta"><span class="tag" style="--c:${cn.c}">${cn.l}</span>${ed?"":`<button class="linkbtn" data-edit="${t.id}">${t.nota?"editar nota":"+ nota"}</button>`}</span>
+    </div></li>`}
+
+// menu de status
+let menuEl=null;
+function closeMenu(){menuEl?.remove();menuEl=null}
+function openMenu(btn,id){
+  closeMenu();menuEl=document.createElement("div");menuEl.className="menu";menuEl.setAttribute("role","menu");
+  menuEl.innerHTML=STATUS.map(s=>`<button role="menuitem" data-set="${s.k}">${bubble(s.k)}${s.l}</button>`).join("");
+  document.body.appendChild(menuEl);
+  const r=btn.getBoundingClientRect(), w=menuEl.offsetWidth;
+  menuEl.style.top=(r.bottom+window.scrollY+6)+"px";
+  menuEl.style.left=Math.max(8,Math.min(r.left+window.scrollX,document.documentElement.clientWidth-w-8))+"px";
+  menuEl.querySelector("button").focus();
+  menuEl.onclick=e=>{const b=e.target.closest("[data-set]");if(b){setStatus(id,b.dataset.set);closeMenu()}};
+}
+document.addEventListener("click",e=>{
+  const bb=e.target.closest(".bubble-btn");
+  if(bb){e.stopPropagation();if(!db)return;openMenu(bb,bb.dataset.id);return}
+  if(menuEl&&!e.target.closest(".menu"))closeMenu();
+  const f=e.target.closest("[data-f]");if(f){filtro=filtro===f.dataset.f?null:f.dataset.f;render()}
+  const ed=e.target.closest("[data-edit]");if(ed&&db){editing=ed.dataset.edit;render();$("note-"+editing)?.focus()}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMenu();if(editing){editing=null;render()}}});
+document.addEventListener("submit",e=>{
+  const nf=e.target.closest("[data-note]");
+  if(nf){e.preventDefault();const id=nf.dataset.note,v=$("note-"+id).value.trim();editing=null;
+    const t=tasks.find(x=>x.id===id);if(t&&(t.nota||"")!==v){t.nota=v;db.doc("tarefas/"+id).update({nota:v}).catch(fail)}render()}
+});
+function setStatus(id,s){const t=tasks.find(x=>x.id===id);if(!t||t.status===s)return;t.status=s;render();
+  db.doc("tarefas/"+id).update({status:s,atualizado:new Date().toISOString()}).catch(fail)}
+function fail(e){console.warn(e);flash(e?.code==="permission_denied"?"Você pode ver, mas não editar este caderno.":"Não salvou. Confira a conexão e tente de novo.")}
+function flash(msg){let n=$("flash");if(!n){n=document.createElement("div");n.id="flash";n.className="state";n.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;color:var(--ink)";document.body.appendChild(n)}
+  n.textContent=msg;n.hidden=false;clearTimeout(n._t);n._t=setTimeout(()=>n.hidden=true,4000)}
+
+$("addForm").addEventListener("submit",e=>{e.preventDefault();const v=$("addTitle").value.trim();if(!v||!db)return;
+  const fase=+$("addFase").value, canal=$("addCanal").value;
+  const ordem=Math.max(0,...tasks.filter(t=>t.fase===fase).map(t=>t.ordem||0))+1;
+  db.collection("tarefas").add({titulo:v,canal,fase,ordem,status:"aberto",nota:"",detalhe:""}).catch(fail);
+  $("addTitle").value=""});
+
+render();
+(async()=>{
+  const timer=setTimeout(()=>{if(!loaded)$("state").textContent="O caderno está demorando para abrir. Entre na sua conta do Claude para ver e marcar as tarefas."},10000);
+  try{ db=await window.claude?.use?.("db"); }catch(e){db=null}
+  if(!db){clearTimeout(timer);$("state").textContent="Entre na sua conta do Claude para ver e marcar as tarefas.";return}
+  db.collection("tarefas").onSnapshot(snap=>{clearTimeout(timer);loaded=true;
+    tasks=snap.docs.map(d=>({id:d.id,...d.data()}));if(!menuEl)render();else{render()}},
+    err=>{clearTimeout(timer);$("state").textContent="Não consegui abrir o caderno agora. Recarregue a página em instantes."});
+})();
+</script>
