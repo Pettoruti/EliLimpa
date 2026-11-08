@@ -8,7 +8,7 @@
   --paper:#f3f6f9; --dot:#c9d3df; --ink:#16233a; --muted:#5a6880; --line:#dbe2ea; --card:#ffffff;
   --accent:#1f4fd1;
   --s-aberto:#8a97ab; --s-andamento:#2f6fe4; --s-aguardando:#d69408; --s-bloqueado:#d23c3c; --s-feito:#1f9d55;
-  --amazon:#e47911; --magalu:#0086ff; --tiktok:#e5174b; --comum:#5b5fc7;
+  --amazon:#e47911; --magalu:#0086ff; --tiktok:#e5174b; --comum:#5b5fc7; --site:#0f8a7a;
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
@@ -16,11 +16,11 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#0f1522; --dot:#25304a; --ink:#e6ecf5; --muted:#93a1b8; --line:#26314a; --card:#151d2e;
   --accent:#7ea2ff; --s-aberto:#7c8aa3; --s-andamento:#5a8dff; --s-aguardando:#f0b03a; --s-bloqueado:#f06464; --s-feito:#3cc47a;
-  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; color-scheme:dark}}
+  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; --site:#3cc2ae; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0f1522; --dot:#25304a; --ink:#e6ecf5; --muted:#93a1b8; --line:#26314a; --card:#151d2e;
   --accent:#7ea2ff; --s-aberto:#7c8aa3; --s-andamento:#5a8dff; --s-aguardando:#f0b03a; --s-bloqueado:#f06464; --s-feito:#3cc47a;
-  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; color-scheme:dark}
+  --amazon:#ff9a3d; --magalu:#4aa8ff; --tiktok:#ff5a7e; --comum:#9599ff; --site:#3cc2ae; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
   background-image:radial-gradient(var(--dot) 1px,transparent 1.2px);background-size:22px 22px;}
@@ -40,8 +40,7 @@ header{display:flex;flex-direction:column;gap:4px}
 .chan.off{color:var(--muted);border-style:dashed}
 
 /* resumo */
-.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-@media (max-width:720px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 .sum{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;font:inherit;color:inherit}
 .sum[aria-pressed="true"]{outline:2px solid var(--c);outline-offset:-1px}
 .sum:focus-visible{outline:2px solid var(--accent)}
@@ -129,7 +128,7 @@ footer{font-size:13px;color:var(--muted)}
       <input id="addTitle" placeholder="Nova tarefa, ex.: pedir isenção de EAN dos kits" aria-label="Nova tarefa">
       <select id="addCanal" aria-label="Frente">
         <option value="comum">Base Bling</option><option value="amazon">Amazon</option>
-        <option value="magalu">Magalu</option><option value="tiktok">TikTok Shop</option>
+        <option value="magalu">Magalu</option><option value="tiktok">TikTok Shop</option><option value="site">Site Nuvemshop</option>
       </select>
       <select id="addFase" aria-label="Etapa"></select>
       <button type="submit">Adicionar</button>
@@ -143,7 +142,7 @@ footer{font-size:13px;color:var(--muted)}
 const STATUS=[
   {k:"aberto",l:"A fazer"},{k:"andamento",l:"Em andamento"},{k:"aguardando",l:"Aguardando marketplace"},
   {k:"bloqueado",l:"Travado"},{k:"feito",l:"Feito"}];
-const CANAIS={comum:{l:"Base Bling",c:"var(--comum)"},amazon:{l:"Amazon",c:"var(--amazon)"},magalu:{l:"Magalu",c:"var(--magalu)"},tiktok:{l:"TikTok Shop",c:"var(--tiktok)"}};
+const CANAIS={comum:{l:"Base Bling",c:"var(--comum)"},amazon:{l:"Amazon",c:"var(--amazon)"},magalu:{l:"Magalu",c:"var(--magalu)"},tiktok:{l:"TikTok Shop",c:"var(--tiktok)"},site:{l:"Site Nuvemshop",c:"var(--site)"}};
 const FASES=[
   {n:1,t:"Contas e documentos",due:"até 13/nov"},
   {n:2,t:"Integração no Bling",due:"até 20/nov"},
