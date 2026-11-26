@@ -103,9 +103,9 @@ Situação em 26/11/2026. Cole este resumo no início de uma nova conversa.
   - Toalheiro Puxa e Corta Premisse (margem de 10,5% sem a tarifa do DBA).
   - Percarbonato Calisul (ver se é perigoso; o EAN no Bling é o código interno).
   - Fibraço Scotch-Brite com 5, Fibra Bettanin com 10, Toppel interfolhado.
+  - **Leal em rolo (30, 50 e 60L):** o Raul considera o Leal melhor que a concorrência. Só entra se o anúncio provar isso: micragem, carga suportada, norma ABNT NBR 9191 se constar na embalagem, peso por saco (30L = 12,4 g; 50L = 16,8 g pelo Bling) e foto ou vídeo de teste de carga. Custo por saco: 30L R$ 0,43 e 50L R$ 0,57, contra R$ 0,21 do Embalixo 50L mega econômico na Amazon.
 - **Fora:**
   - Galões de 5L.
-  - Leal em rolo (30, 50 e 60L).
   - Kit Leve Brisa.
   - Embalixo.
   - Avulsos baratos: copos, papel Ness, sabão em pó, pulverizador.
